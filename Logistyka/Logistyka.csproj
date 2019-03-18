@@ -47,6 +47,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activity.cs" />
+    <Compile Include="DataClasses.cs" />
+    <Compile Include="GanttChart.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Event.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

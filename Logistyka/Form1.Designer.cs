@@ -45,6 +45,8 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.button4 = new System.Windows.Forms.Button();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.SuspendLayout();
             // 
             // lb1
@@ -190,11 +192,36 @@
             this.textBox1.Size = new System.Drawing.Size(100, 20);
             this.textBox1.TabIndex = 12;
             // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(12, 318);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(145, 23);
+            this.button4.TabIndex = 13;
+            this.button4.Text = "rysuj wykres Gantta";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 99.10714F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 0.8928571F));
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 372);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 2.941176F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 97.05882F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(797, 168);
+            this.tableLayoutPanel1.TabIndex = 14;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1069, 648);
+            this.Controls.Add(this.tableLayoutPanel1);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
@@ -234,6 +261,11 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+
+        internal System.Windows.Forms.ContextMenuStrip ContextMenuGanttChart1;
+        internal System.Windows.Forms.ToolStripMenuItem SaveImageToolStripMenuItem;
     }
 }
 
