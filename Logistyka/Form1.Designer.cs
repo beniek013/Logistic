@@ -47,6 +47,7 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button4 = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.button5 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lb1
@@ -84,6 +85,7 @@
             this.listView1.TabIndex = 2;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
+            this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
             // 
             // column1
             // 
@@ -207,19 +209,30 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 99.10714F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 0.8928571F));
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 372);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 347);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 2.941176F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 97.05882F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(797, 168);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(797, 289);
             this.tableLayoutPanel1.TabIndex = 14;
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(187, 318);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(145, 23);
+            this.button5.TabIndex = 15;
+            this.button5.Text = "wyczyść wykres";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1069, 648);
+            this.Controls.Add(this.button5);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.textBox1);
@@ -266,6 +279,7 @@
 
         internal System.Windows.Forms.ContextMenuStrip ContextMenuGanttChart1;
         internal System.Windows.Forms.ToolStripMenuItem SaveImageToolStripMenuItem;
+        private System.Windows.Forms.Button button5;
     }
 }
 

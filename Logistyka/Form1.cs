@@ -15,10 +15,11 @@ namespace Logistyka
     {
         TextBox txtLog;
         GanttChart ganttChart1;
-
-
+        List<BarInformation> lst1 = new List<BarInformation>();
 
         public List<Activity> activities;
+
+
         public Form1()
         {
             InitializeComponent();
@@ -42,6 +43,7 @@ namespace Logistyka
                 ListViewItem item = new ListViewItem(textBoxId.Text);
                 item.SubItems.AddRange(textBoxes.Select(x => x.Text).ToArray());
                 var test = textBoxes.Select(x => x.Text).ToArray();
+                
                 listView1.Items.Add(item);
                 activities.Add(new Activity(Id, textBoxName.Text, textBoxDuration.Text, textBoxPrecessorId.Text));
                 textBoxId.Clear();
@@ -70,10 +72,10 @@ namespace Logistyka
 
         private void button2_Click(object sender, EventArgs e)
         {
-            var duration = new int[] { 5,3,4,6,4,3};
-            var names = "ABCDEF";
-            var preccessorId = new List<string>() {"","1", "","1","4","2;3;4" };
-            for (int i = 0; i < 6; i++)
+            var duration = new int[] { 5,3,4,6,4,3,5,7,3,2};
+            var names = "ABCDEFGHIJ";
+            var preccessorId = new List<string>() {"","", "","","","","","","","" };
+            for (int i = 0; i < 10; i++)
             {
                 ListViewItem item = new ListViewItem((i+1).ToString());
                 item.SubItems.Add(names[i].ToString());
@@ -93,7 +95,8 @@ namespace Logistyka
 
         private void button4_Click(object sender, EventArgs e)
         {
-            
+            tableLayoutPanel1.Controls.Clear();
+            tableLayoutPanel1.RowStyles.Clear();
 
             txtLog = new TextBox();
             txtLog.Dock = DockStyle.Fill;
@@ -106,8 +109,8 @@ namespace Logistyka
             ganttChart1 = new GanttChart();
             ganttChart1.AllowChange = false;
             ganttChart1.Dock = DockStyle.Fill;
-            ganttChart1.FromDate = new DateTime(2015, 12, 12, 0, 0, 0);
-            ganttChart1.ToDate = new DateTime(2015, 12, 24, 0, 0, 0);
+            ganttChart1.FromDate = new DateTime(2015, 12, 1, 0, 0, 0);
+            ganttChart1.ToDate = ganttChart1.FromDate.AddDays(20);
             tableLayoutPanel1.Controls.Add(ganttChart1, 0, 1);
 
             ganttChart1.MouseMove += new MouseEventHandler(ganttChart1.GanttChart_MouseMove);
@@ -116,20 +119,32 @@ namespace Logistyka
             ganttChart1.MouseLeave += new EventHandler(ganttChart1.GanttChart_MouseLeave);
             ganttChart1.ContextMenuStrip = ContextMenuGanttChart1;
 
-            List<BarInformation> lst1 = new List<BarInformation>();
+            
+            lst1.Clear();
 
-            foreach(Activity act in activities)
+            int j = 0;
+            foreach(ListViewItem lst in listView1.Items)
             {
-                lst1.Add(new BarInformation());
+                if(lst.SubItems[3].Text != String.Empty)
+                lst1.Add(new BarInformation("Row "+lst.SubItems[0].Text,
+                    new DateTime(2015,12,1),
+                    new DateTime(2015, 12, 1).AddDays(Int32.Parse(lst.SubItems[2].Text)+Int32.Parse((listView1.Items[Int32.Parse(lst.SubItems[3].Text)-1]).SubItems[2].Text)),
+                    Color.Blue,
+                    Color.Red,
+                    j));
+                else
+                {
+                    lst1.Add(new BarInformation("Row " + lst.SubItems[0].Text, new DateTime(2015, 12, 1), new DateTime(2015,12,1).AddDays(Int32.Parse(lst.SubItems[2].Text)), Color.Blue, Color.Red, Int32.Parse(lst.SubItems[0].Text)));
+                }
             }
 
 
-            lst1.Add(new BarInformation("Row 1", new DateTime(2015, 12, 12), new DateTime(2015, 12, 16), Color.Aqua, Color.Khaki, 0));
+            /*lst1.Add(new BarInformation("Row 1", new DateTime(2015, 12, 12), new DateTime(2015, 12, 16), Color.Aqua, Color.Khaki, 0));
             lst1.Add(new BarInformation("Row 2", new DateTime(2015, 12, 13), new DateTime(2015, 12, 20), Color.AliceBlue, Color.Khaki, 1));
             lst1.Add(new BarInformation("Row 3", new DateTime(2015, 12, 14), new DateTime(2015, 12, 24), Color.Violet, Color.Khaki, 2));
             lst1.Add(new BarInformation("Row 2", new DateTime(2015, 12, 21), new DateTime(2015, 12, 22, 12, 0, 0), Color.Yellow, Color.Khaki, 1));
             lst1.Add(new BarInformation("Row 1", new DateTime(2015, 12, 17), new DateTime(2015, 12, 24), Color.LawnGreen, Color.Khaki, 0));
-
+            */
             foreach (BarInformation bar in lst1)
             {
                 ganttChart1.AddChartBar(bar.RowText, bar, bar.FromTime, bar.ToTime, bar.Color, bar.HoverColor, bar.Index);
@@ -160,6 +175,15 @@ namespace Logistyka
 
         }
 
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
 
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            tableLayoutPanel1.Controls.Clear();
+            tableLayoutPanel1.RowStyles.Clear();
+        }
     }
 }
