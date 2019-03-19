@@ -122,29 +122,29 @@ namespace Logistyka
             
             lst1.Clear();
 
-            int j = 0;
+            
             foreach(ListViewItem lst in listView1.Items)
             {
-                if(lst.SubItems[3].Text != String.Empty)
-                lst1.Add(new BarInformation("Row "+lst.SubItems[0].Text,
-                    new DateTime(2015,12,1),
-                    new DateTime(2015, 12, 1).AddDays(Int32.Parse(lst.SubItems[2].Text)+Int32.Parse((listView1.Items[Int32.Parse(lst.SubItems[3].Text)-1]).SubItems[2].Text)),
-                    Color.Blue,
-                    Color.Red,
-                    j));
+                if (lst.SubItems[3].Text == "")
+                {
+                    lst1.Add(new BarInformation("Row " + lst.SubItems[0].Text,
+                        new DateTime(2015, 12, 1), new DateTime(2015, 12, 1).AddDays(Int32.Parse(lst.SubItems[2].Text)),
+                        Color.Blue, Color.Red,
+                        Int32.Parse(lst.SubItems[0].Text)));
+                }
                 else
                 {
-                    lst1.Add(new BarInformation("Row " + lst.SubItems[0].Text, new DateTime(2015, 12, 1), new DateTime(2015,12,1).AddDays(Int32.Parse(lst.SubItems[2].Text)), Color.Blue, Color.Red, Int32.Parse(lst.SubItems[0].Text)));
+                    
+                    label1.Visible = true;
+                    lst1.Add(new BarInformation("Row " + lst.SubItems[0].Text,
+                        new DateTime(2015, 12, 1).AddDays(Int32.Parse((listView1.Items[Int32.Parse(lst.SubItems[3].Text) - 1]).SubItems[2].Text)),
+                        new DateTime(2015, 12, 1).AddDays(Int32.Parse(lst.SubItems[2].Text) + Int32.Parse((listView1.Items[Int32.Parse(lst.SubItems[3].Text) - 1]).SubItems[2].Text)),
+                        Color.Blue,
+                        Color.Red,
+                         Int32.Parse(lst.SubItems[0].Text)));
                 }
             }
 
-
-            /*lst1.Add(new BarInformation("Row 1", new DateTime(2015, 12, 12), new DateTime(2015, 12, 16), Color.Aqua, Color.Khaki, 0));
-            lst1.Add(new BarInformation("Row 2", new DateTime(2015, 12, 13), new DateTime(2015, 12, 20), Color.AliceBlue, Color.Khaki, 1));
-            lst1.Add(new BarInformation("Row 3", new DateTime(2015, 12, 14), new DateTime(2015, 12, 24), Color.Violet, Color.Khaki, 2));
-            lst1.Add(new BarInformation("Row 2", new DateTime(2015, 12, 21), new DateTime(2015, 12, 22, 12, 0, 0), Color.Yellow, Color.Khaki, 1));
-            lst1.Add(new BarInformation("Row 1", new DateTime(2015, 12, 17), new DateTime(2015, 12, 24), Color.LawnGreen, Color.Khaki, 0));
-            */
             foreach (BarInformation bar in lst1)
             {
                 ganttChart1.AddChartBar(bar.RowText, bar, bar.FromTime, bar.ToTime, bar.Color, bar.HoverColor, bar.Index);
