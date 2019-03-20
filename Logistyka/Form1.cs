@@ -69,13 +69,13 @@ namespace Logistyka
         {
             listView1.Items.Clear();
         }
-
+        
         private void button2_Click(object sender, EventArgs e)
         {
-            var duration = new int[] { 5,3,4,6,4,3,5,7,3,2};
-            var names = "ABCDEFGHIJ";
-            var preccessorId = new List<string>() {"","", "","","","","","","","" };
-            for (int i = 0; i < 10; i++)
+            var duration = new int[] { 5,3,4,6};
+            var names = "ABCD";
+            var preccessorId = new List<string>() {"","1", "1,2","2,3"};
+            for (int i = 0; i < 4; i++)
             {
                 ListViewItem item = new ListViewItem((i+1).ToString());
                 item.SubItems.Add(names[i].ToString());
@@ -125,23 +125,40 @@ namespace Logistyka
             
             foreach(ListViewItem lst in listView1.Items)
             {
+                string tmp = lst.SubItems[3].Text;
+                int X = 0;
+                if (tmp != "")
+                {
+                    string[] array = tmp.Split(',');
+                    
+                    int fes = 0;
+                    foreach (String ar in array)
+                    {
+                        fes = Int32.Parse(ar);
+                        if (fes >= X)
+                            X = fes;
+                    }
+                }
+
+                
                 if (lst.SubItems[3].Text == "")
                 {
                     lst1.Add(new BarInformation("Row " + lst.SubItems[0].Text,
                         new DateTime(2015, 12, 1), new DateTime(2015, 12, 1).AddDays(Int32.Parse(lst.SubItems[2].Text)),
                         Color.Blue, Color.Red,
-                        Int32.Parse(lst.SubItems[0].Text)));
+                        Int32.Parse(lst.SubItems[0].Text),
+                         lst.SubItems[3].Text));
                 }
                 else
                 {
-                    
                     label1.Visible = true;
                     lst1.Add(new BarInformation("Row " + lst.SubItems[0].Text,
-                        new DateTime(2015, 12, 1).AddDays(Int32.Parse((listView1.Items[Int32.Parse(lst.SubItems[3].Text) - 1]).SubItems[2].Text)),
-                        new DateTime(2015, 12, 1).AddDays(Int32.Parse(lst.SubItems[2].Text) + Int32.Parse((listView1.Items[Int32.Parse(lst.SubItems[3].Text) - 1]).SubItems[2].Text)),
+                        new DateTime(2015, 12, 1).AddDays(lst1[X-1].ToTime.Day-1),
+                        new DateTime(2015, 12, 1).AddDays(lst1[X-1].ToTime.Day+ Int32.Parse(lst.SubItems[2].Text)-1),
                         Color.Blue,
                         Color.Red,
-                         Int32.Parse(lst.SubItems[0].Text)));
+                         Int32.Parse(lst.SubItems[0].Text),
+                         lst.SubItems[3].Text));
                 }
             }
 
@@ -164,6 +181,9 @@ namespace Logistyka
                 toolTipText.Add(val.FromTime.ToLongDateString() + " - " + val.FromTime.ToString("HH:mm"));
                 toolTipText.Add("To ");
                 toolTipText.Add(val.ToTime.ToLongDateString() + " - " + val.ToTime.ToString("HH:mm"));
+                toolTipText.Add("Precessors:");
+                toolTipText.Add(val.Precessors);
+                
             }
             else
             {

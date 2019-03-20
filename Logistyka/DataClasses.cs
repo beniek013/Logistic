@@ -165,6 +165,13 @@ namespace Logistyka
         private Color _color;
         private Color _hoverColor;
         private int _index;
+        private string _precessors;
+
+        public string Precessors
+        {
+            get { return _precessors; }
+            set { _precessors = value; }
+        }
 
         public string RowText
         {
@@ -206,7 +213,7 @@ namespace Logistyka
         {
         }
 
-        public BarInformation(string rowText, DateTime fromTime, DateTime totime, Color color, Color hoverColor, int index)
+        public BarInformation(string rowText, DateTime fromTime, DateTime totime, Color color, Color hoverColor, int index, string precessors)
         {
             RowText = rowText;
             FromTime = fromTime;
@@ -214,6 +221,7 @@ namespace Logistyka
             Color = color;
             HoverColor = hoverColor;
             Index = index;
+            Precessors = precessors;
         }
     }
 
