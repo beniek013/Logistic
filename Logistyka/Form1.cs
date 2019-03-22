@@ -17,13 +17,15 @@ namespace Logistyka
         GanttChart ganttChart1;
         List<BarInformation> lst1 = new List<BarInformation>();
 
-        public List<Activity> activities;
+        public List<Activity> allActivieties;
+        public List<Event> allEvents;
 
 
         public Form1()
         {
             InitializeComponent();
-            activities = new List<Activity>();
+            allActivieties = new List<Activity>();
+            allEvents = new List<Event>();
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -45,7 +47,7 @@ namespace Logistyka
                 var test = textBoxes.Select(x => x.Text).ToArray();
                 
                 listView1.Items.Add(item);
-                activities.Add(new Activity(Id, textBoxName.Text, textBoxDuration.Text, textBoxPrecessorId.Text));
+                allActivieties.Add(new Activity(Id, textBoxName.Text, textBoxDuration.Text, textBoxPrecessorId.Text));
                 textBoxId.Clear();
                 textBoxes.ForEach(x => x.Clear());
             }
@@ -68,27 +70,28 @@ namespace Logistyka
         private void bt2_Click(object sender, EventArgs e)
         {
             listView1.Items.Clear();
+            allActivieties = new List<Activity>();
         }
         
         private void button2_Click(object sender, EventArgs e)
         {
-            var duration = new int[] { 5,3,4,6};
-            var names = "ABCD";
-            var preccessorId = new List<string>() {"","1", "1,2","2,3"};
-            for (int i = 0; i < 4; i++)
+            var duration = new int[] { 15,9,7,8,15,17,18,11,9,11,13,10,4,6};
+            var names = "ABCDEFGHIJKLMN";
+            var preccessorId = new List<string>() {"","", "1","1,2", "1,2", "3,4", "3,4", "5,7", "5,7", "6,9", "6,9", "8", "10", "11,12,13" };
+            for (int i = 0; i < names.Length; i++)
             {
                 ListViewItem item = new ListViewItem((i+1).ToString());
                 item.SubItems.Add(names[i].ToString());
                 item.SubItems.Add(duration[i].ToString());
                 item.SubItems.Add(preccessorId[i].ToString());
                 listView1.Items.Add(item);
-                activities.Add(new Activity(i + 1, names[i].ToString(), duration[i].ToString(), preccessorId[i].ToString()));
+                allActivieties.Add(new Activity(i + 1, names[i].ToString(), duration[i].ToString(), preccessorId[i].ToString()));
             }
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            textBox1.Text = activities.ToList().First().Duration;
+            
         }
 
         
@@ -110,7 +113,7 @@ namespace Logistyka
             ganttChart1.AllowChange = false;
             ganttChart1.Dock = DockStyle.Fill;
             ganttChart1.FromDate = new DateTime(2015, 12, 1, 0, 0, 0);
-            ganttChart1.ToDate = ganttChart1.FromDate.AddDays(20);
+            ganttChart1.ToDate = ganttChart1.FromDate.AddDays(40);
             tableLayoutPanel1.Controls.Add(ganttChart1, 0, 1);
 
             ganttChart1.MouseMove += new MouseEventHandler(ganttChart1.GanttChart_MouseMove);
@@ -122,22 +125,22 @@ namespace Logistyka
             
             lst1.Clear();
 
+            var list = new List<int>();
             
             foreach(ListViewItem lst in listView1.Items)
             {
                 string tmp = lst.SubItems[3].Text;
                 int X = 0;
+                list.Add(int.Parse(lst.SubItems[2].Text));
                 if (tmp != "")
                 {
                     string[] array = tmp.Split(',');
+                    //var test = allActivieties.FindAll(x => array.Contains(x.Id.ToString()));
                     
+                    var find = allActivieties.FindAll(x => array.Contains(x.Id.ToString())).OrderBy(x => x.Duration).First();
+                    list[listView1.Items.IndexOf(lst)] += int.Parse(find.Duration);
+                    X = find.Id;
                     int fes = 0;
-                    foreach (String ar in array)
-                    {
-                        fes = Int32.Parse(ar);
-                        if (fes >= X)
-                            X = fes;
-                    }
                 }
 
                 
@@ -151,7 +154,6 @@ namespace Logistyka
                 }
                 else
                 {
-                    label1.Visible = true;
                     lst1.Add(new BarInformation("Row " + lst.SubItems[0].Text,
                         new DateTime(2015, 12, 1).AddDays(lst1[X-1].ToTime.Day-1),
                         new DateTime(2015, 12, 1).AddDays(lst1[X-1].ToTime.Day+ Int32.Parse(lst.SubItems[2].Text)-1),
@@ -204,6 +206,69 @@ namespace Logistyka
         {
             tableLayoutPanel1.Controls.Clear();
             tableLayoutPanel1.RowStyles.Clear();
+        }
+
+        private void LOAD2_Click(object sender, EventArgs e)
+        {
+            var duration = new int[] { 5, 3, 4, 6, 4, 3 };
+            var names = "ABCDEF";
+            var preccessorId = new List<string>() { "", "1", "", "1", "4", "2,3,4" };
+            for (int i = 0; i < names.Length; i++)
+            {
+                ListViewItem item = new ListViewItem((i + 1).ToString());
+                item.SubItems.Add(names[i].ToString());
+                item.SubItems.Add(duration[i].ToString());
+                item.SubItems.Add(preccessorId[i].ToString());
+                listView1.Items.Add(item);
+                allActivieties.Add(new Activity(i + 1, names[i].ToString(), duration[i].ToString(), preccessorId[i].ToString()));
+            }
+        }
+
+        private void Button6_Click(object sender, EventArgs e)
+        {
+            CalculateCriticalPath();
+            /*var criticalPath = new List<Activity>();
+            var firsts = allActivieties.Where(x => String.IsNullOrWhiteSpace(x.PrecessorId)).ToList();
+            criticalPath.Add(LongestPath(firsts));
+            while (allActivieties.Any(x => x.PrecessorId.Contains(criticalPath.Last().Id.ToString()))) {
+                var concerned = allActivieties.Where(x => x.PrecessorId.Contains(criticalPath.Last().Id.ToString())).ToList();
+                criticalPath.Add(LongestPath(concerned));
+            }
+            criticalPathTxt.Text = criticalPath.Sum(x => int.Parse(x.Duration)).ToString();
+            List<string> toolTipText = new List<string>();
+            lst1.ToList();
+            var critical = lst1.Where(y => criticalPath.Select(x => x.Id).Contains(y.Index)).ToList();
+            foreach (var row in critical) {
+                ganttChart1.AddChartBar($"Row {row.Index}", row, row.FromTime, row.ToTime, Color.Black, Color.Red, row.Index);
+            }
+            ganttChart1.PaintChart();*/
+        }
+
+        private void CalculateCriticalPath()
+        {
+            var criticalPath = new List<Activity>();
+            var last = lst1.ToList().OrderByDescending(x => x.ToTime).First();
+            criticalPath.Add(allActivieties.Find(x => x.Id == last.Index));
+            while (allActivieties.Any(x => criticalPath.Last().PrecessorId.Contains(x.Id.ToString()))) {
+                var concerned = allActivieties.Where(x => criticalPath.Last().PrecessorId.Contains(x.Id.ToString())).ToList();
+                criticalPath.Add(LongestPath(concerned));
+            }
+            criticalPathTxt.Text = criticalPath.Sum(x => int.Parse(x.Duration)).ToString();
+            List<string> toolTipText = new List<string>();
+            lst1.ToList();
+            var critical = lst1.Where(y => criticalPath.Select(x => x.Id).Contains(y.Index)).ToList();
+            criticalTxt.Text = String.Join(" - ", criticalPath.Select(x => x.Name).OrderBy(y => y));
+            foreach (var row in critical)
+            {
+                ganttChart1.AddChartBar($"Row {row.Index}", row, row.FromTime, row.ToTime, Color.Black, Color.Red, row.Index);
+            }
+            ganttChart1.PaintChart();
+        }
+
+
+
+        private static Activity LongestPath(List<Activity> activities) {
+            return activities.OrderByDescending(x => x.Duration).First();
         }
     }
 }
