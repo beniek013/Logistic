@@ -8,10 +8,10 @@ namespace Logistyka
 {
     public class Activity
     {
-        private int Id;
-        private string Name;
+        public int Id;
+        public string Name;
         public string Duration;
-        private string PrecessorId;
+        public string PrecessorId;
 
         public Activity(){}
         public Activity(int id, string name, string duration, string precessorId)
