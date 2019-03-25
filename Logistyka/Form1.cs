@@ -112,8 +112,8 @@ namespace Logistyka
             ganttChart1 = new GanttChart();
             ganttChart1.AllowChange = false;
             ganttChart1.Dock = DockStyle.Fill;
-            ganttChart1.FromDate = new DateTime(2015, 12, 1, 0, 0, 0);
-            ganttChart1.ToDate = ganttChart1.FromDate.AddDays(40);
+            ganttChart1.FromDate = new DateTime(2015, 03, 1, 0, 0, 0);
+            ganttChart1.ToDate = ganttChart1.FromDate.AddDays(70);
             tableLayoutPanel1.Controls.Add(ganttChart1, 0, 1);
 
             ganttChart1.MouseMove += new MouseEventHandler(ganttChart1.GanttChart_MouseMove);
@@ -134,29 +134,52 @@ namespace Logistyka
                 list.Add(int.Parse(lst.SubItems[2].Text));
                 if (tmp != "")
                 {
+                    int max = 0;
+                    int id = 0;
                     string[] array = tmp.Split(',');
+                    foreach(string m in array)
+                    {
+                       if((list[int.Parse(m)-1]+ int.Parse(lst.SubItems[2].Text)) > max)
+                        {
+                            max = list[int.Parse(m) - 1]+int.Parse(lst.SubItems[2].Text);
+                            id = int.Parse(m);         
+                         }
+                    }
+                    list[int.Parse(lst.SubItems[0].Text) - 1] += (max- int.Parse(lst.SubItems[2].Text));
+                    X = id;
                     //var test = allActivieties.FindAll(x => array.Contains(x.Id.ToString()));
                     
-                    var find = allActivieties.FindAll(x => array.Contains(x.Id.ToString())).OrderBy(x => x.Duration).First();
-                    list[listView1.Items.IndexOf(lst)] += int.Parse(find.Duration);
-                    X = find.Id;
-                    int fes = 0;
+                    //var find = allActivieties.FindAll(x => array.Contains(x.Id.ToString())).OrderBy(x => x.Duration).First();
+                    //list[listView1.Items.IndexOf(lst)] += int.Parse(find.Duration);
+                    //X = find.Id;
+                    //t fes = 0;
                 }
 
                 
                 if (lst.SubItems[3].Text == "")
                 {
-                    lst1.Add(new BarInformation("Row " + lst.SubItems[0].Text,
-                        new DateTime(2015, 12, 1), new DateTime(2015, 12, 1).AddDays(Int32.Parse(lst.SubItems[2].Text)),
+                    lst1.Add(new BarInformation(
+                        "Row " + lst.SubItems[0].Text,
+                        new DateTime(2015, 03, 01),
+                        new DateTime(2015, 03, 01).AddDays(Int32.Parse(lst.SubItems[2].Text)),
                         Color.Blue, Color.Red,
                         Int32.Parse(lst.SubItems[0].Text),
                          lst.SubItems[3].Text));
                 }
                 else
                 {
+                    //problemem jest to, że jeśli liczba dni przekroczy 30 dni, miesiąc nie przeskakuje na następny 
+                    int number_of_days_in_months=0;
+                    for(int i=0;i< lst1[X - 1].ToTime.Month;i++)
+                    {
+                        number_of_days_in_months += DateTime.DaysInMonth(2015, i+1);
+
+                    }
+                    //minus days to March
+                    number_of_days_in_months -= (31+28+31);
                     lst1.Add(new BarInformation("Row " + lst.SubItems[0].Text,
-                        new DateTime(2015, 12, 1).AddDays(lst1[X-1].ToTime.Day-1),
-                        new DateTime(2015, 12, 1).AddDays(lst1[X-1].ToTime.Day+ Int32.Parse(lst.SubItems[2].Text)-1),
+                        new DateTime(2015, 03, 01).AddDays(lst1[X-1].ToTime.Day+number_of_days_in_months-1),
+                        new DateTime(2015, 03, 01).AddDays(lst1[X-1].ToTime.Day+ Int32.Parse(lst.SubItems[2].Text)+number_of_days_in_months),
                         Color.Blue,
                         Color.Red,
                          Int32.Parse(lst.SubItems[0].Text),
