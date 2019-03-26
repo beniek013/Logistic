@@ -19,8 +19,8 @@ namespace Logistyka
 
         public List<Activity> allActivieties;
         public List<Event> allEvents;
-
-
+       
+        
         public Form1()
         {
             InitializeComponent();
@@ -249,22 +249,105 @@ namespace Logistyka
 
         private void Button6_Click(object sender, EventArgs e)
         {
-            CalculateCriticalPath();
-            /*var criticalPath = new List<Activity>();
-            var firsts = allActivieties.Where(x => String.IsNullOrWhiteSpace(x.PrecessorId)).ToList();
-            criticalPath.Add(LongestPath(firsts));
-            while (allActivieties.Any(x => x.PrecessorId.Contains(criticalPath.Last().Id.ToString()))) {
-                var concerned = allActivieties.Where(x => x.PrecessorId.Contains(criticalPath.Last().Id.ToString())).ToList();
-                criticalPath.Add(LongestPath(concerned));
+           
+            Action[] list = null;
+            int na=0;
+            list = new Action[listView1.Items.Count];
+            int i = 0;
+            foreach (ListViewItem lst in listView1.Items)
+            {
+                na++;
+                Action activity = new Action();
+
+                activity.Id = lst.SubItems[0].Text;
+                activity.Description = lst.SubItems[1].Text;
+                activity.Duration = int.Parse(lst.SubItems[2].Text);
+
+                string tmp = lst.SubItems[3].Text;
+ 
+                if (tmp != "")
+                {
+
+                    string[] array = tmp.Split(',');
+                    activity.Predecessors = new Action[array.Length];
+                    
+                    string id;
+
+                    for (int j = 0; j < array.Length; j++)
+                    {
+
+                        id = array[j];
+
+                        Action aux = new Action();
+
+                        if ((aux = aux.CheckActivity(list, id, i)) != null)
+                        {
+                            activity.Predecessors[j] = aux;
+
+                            list[aux.GetIndex(list, aux, i)] = aux.SetSuccessors(aux, activity);
+                        }
+                        else
+                        {
+                            Console.Beep();
+                            Console.Write("\n No match found! Try again.\n\n");
+                            j--;
+                        }
+                    }
+                }
+                list[i] = activity;
+                i++;
             }
-            criticalPathTxt.Text = criticalPath.Sum(x => int.Parse(x.Duration)).ToString();
-            List<string> toolTipText = new List<string>();
-            lst1.ToList();
-            var critical = lst1.Where(y => criticalPath.Select(x => x.Id).Contains(y.Index)).ToList();
-            foreach (var row in critical) {
-                ganttChart1.AddChartBar($"Row {row.Index}", row, row.FromTime, row.ToTime, Color.Black, Color.Red, row.Index);
+
+            list[0].Eet = list[0].Est + list[0].Duration;
+
+            for (int k = 1; k < na; k++)
+            {
+                if (list[k].Predecessors == null)
+                    continue;
+                foreach (Action activity in list[k].Predecessors)
+                {
+                    if (list[k].Est < activity.Eet)
+                        list[k].Est = activity.Eet;
+                }
+
+                list[k].Eet = list[k].Est + list[k].Duration;
             }
-            ganttChart1.PaintChart();*/
+
+
+
+
+            list[na - 1].Let = list[na - 1].Eet;
+            list[na - 1].Lst = list[na - 1].Let - list[na - 1].Duration;
+
+            for (int m = na - 2; m >= 0; m--)
+            {
+                foreach (Action activity in list[m].Successors)
+                {
+                    if (list[m].Let == 0)
+                        list[m].Let = activity.Lst;
+                    else
+                      if (list[m].Let > activity.Lst)
+                        list[m].Let = activity.Lst;
+                }
+
+                list[m].Lst = list[m].Let - list[m].Duration;
+            }
+
+            //list = GetActivities(list);
+            //list = WalkListAhead(list);
+            //list = WalkListAback(list);
+
+            string CPM = "";
+            foreach (Action activity in list)
+            {
+                
+                if ((activity.Eet - activity.Let == 0) && (activity.Est - activity.Lst == 0))
+                    CPM = CPM + activity.Id+"-";
+            }
+           
+            criticalTxt.Text = CPM;
+            criticalPathTxt.Text = (list[list.Length - 1].Eet).ToString();
+            
         }
 
         private void CalculateCriticalPath()
@@ -293,5 +376,34 @@ namespace Logistyka
         private static Activity LongestPath(List<Activity> activities) {
             return activities.OrderByDescending(x => x.Duration).First();
         }
+
+
+        
+
+        /// <summary>
+        /// Performs the walk ahead inside the array of activities calculating for each
+        /// activity its earliest start time and earliest end time.
+        /// </summary>
+        /// <param name="list">Array storing the activities already entered.</param>
+        /// <returns>list</returns>
+        
+
+        /// <summary>
+        /// Performs the walk aback inside the array of activities calculating for each
+        /// activity its latest start time and latest end time.
+        /// </summary>
+        /// <param name="list">Array storing the activities already entered.</param>
+        /// <returns>list</returns>
+       
+
+        /// <summary>
+        /// Calculates the critical path by verifyng if each activity's earliest end time
+        /// minus the latest end time and earliest start time minus the latest start
+        /// time are equal zero. If so, then prints out the activity id that match the
+        /// criteria. Plus, prints out the project's total duration. 
+        /// </summary>
+        /// <param name="list">Array containg the activities already entered.</param>
+        
+    
     }
 }

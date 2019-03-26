@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Action.cs" />
     <Compile Include="Activity.cs" />
     <Compile Include="DataClasses.cs" />
     <Compile Include="GanttChart.cs">
