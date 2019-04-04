@@ -159,7 +159,7 @@ namespace Logistyka
                 if (lst.SubItems[3].Text == "")
                 {
                     lst1.Add(new BarInformation(
-                        "Row " + lst.SubItems[0].Text,
+                        lst.SubItems[1].Text,
                         new DateTime(2015, 03, 01),
                         new DateTime(2015, 03, 01).AddDays(Int32.Parse(lst.SubItems[2].Text)),
                         Color.Blue, Color.Red,
@@ -177,7 +177,7 @@ namespace Logistyka
                     }
                     //minus days to March
                     number_of_days_in_months -= (31+28+31);
-                    lst1.Add(new BarInformation("Row " + lst.SubItems[0].Text,
+                    lst1.Add(new BarInformation(lst.SubItems[1].Text,
                         new DateTime(2015, 03, 01).AddDays(lst1[X-1].ToTime.Day+number_of_days_in_months-1),
                         new DateTime(2015, 03, 01).AddDays(lst1[X-1].ToTime.Day+ Int32.Parse(lst.SubItems[2].Text)+number_of_days_in_months),
                         Color.Blue,
@@ -348,7 +348,8 @@ namespace Logistyka
             var critical = lst1.Where(x => barInformations.Contains(x.Index.ToString()));
             foreach (var row in critical)
             {
-                ganttChart1.AddChartBar($"Row {row.Index}", row, row.FromTime, row.ToTime, Color.Red, Color.Black, row.Index);
+                var test = listView1.Items[row.Index - 1].SubItems[1].Text;
+                ganttChart1.AddChartBar($"{test}", row, row.FromTime, row.ToTime, Color.Red, Color.Black, row.Index);
             }
             ganttChart1.PaintChart();
             criticalTxt.Text = CPM;
