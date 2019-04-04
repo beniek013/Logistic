@@ -205,12 +205,12 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 99.10714F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 0.8928571F));
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(24, 348);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(25, 348);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 2.941176F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 97.05882F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1429, 228);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(967, 242);
             this.tableLayoutPanel1.TabIndex = 14;
             // 
             // button5
@@ -282,7 +282,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1465, 622);
+            this.ClientSize = new System.Drawing.Size(1370, 622);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);

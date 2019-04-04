@@ -344,7 +344,13 @@ namespace Logistyka
                 if ((activity.Eet - activity.Let == 0) && (activity.Est - activity.Lst == 0))
                     CPM = CPM + activity.Id+"-";
             }
-           
+            var barInformations = CPM.Split('-').ToList();
+            var critical = lst1.Where(x => barInformations.Contains(x.Index.ToString()));
+            foreach (var row in critical)
+            {
+                ganttChart1.AddChartBar($"Row {row.Index}", row, row.FromTime, row.ToTime, Color.Red, Color.Black, row.Index);
+            }
+            ganttChart1.PaintChart();
             criticalTxt.Text = CPM;
             criticalPathTxt.Text = (list[list.Length - 1].Eet).ToString();
             
