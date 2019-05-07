@@ -10,12 +10,18 @@ using System.Windows.Forms;
 
 namespace OptimalRangeSelection
 {
+
+
     public partial class Form1 : Form
     {
+        private Form childForm;
+
+
         public Form1()
         {
             InitializeComponent();
         }
+
 
         private void Button1_Click(object sender, EventArgs e)
         {
@@ -46,6 +52,19 @@ namespace OptimalRangeSelection
 
             solver.Solve();
             solver.PrintResults(textBox1);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Form2 f2 = new Form2();
+            f2.ShowDialog();
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Form3 f3 = new Form3();
+            f3.ShowDialog();
         }
     }
 }
