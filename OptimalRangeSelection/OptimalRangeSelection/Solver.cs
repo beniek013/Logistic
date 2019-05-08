@@ -12,11 +12,17 @@ namespace OptimalRangeSelection
         private Solution solution;
         private readonly Decision x;
         private readonly Decision y;
+        private readonly string product1;
+        private readonly string product2;
 
-        public Solver(string product1, string product2) {
+        public Solver(string p1, string p2) {
+
+            product1 = p1;
+            product2 = p2;
 
             // Create solver context and model
             context = SolverContext.GetContext();
+            context.ClearModel();
             model = context.CreateModel();
 
             // Create decision for objective function
@@ -52,8 +58,8 @@ namespace OptimalRangeSelection
         {
             Report report = solution.GetReport();
             textBox1.Text = $"result: {solution.Goals.First().ToDouble()}";
-            textBox1.Text += $"{Environment.NewLine}x: {x.ToDouble()}, y: {y.ToDouble()}";
-            textBox1.Text += $"{Environment.NewLine}{report}";
+            textBox1.Text += $"{Environment.NewLine}{product1}: {x.ToDouble()}{Environment.NewLine}{product2}: {y.ToDouble()}";
+            //textBox1.Text += $"{Environment.NewLine}{report}";
         }
     }
 }

@@ -14,9 +14,6 @@ namespace OptimalRangeSelection
 
     public partial class Form1 : Form
     {
-        private Form childForm;
-
-
         public Form1()
         {
             InitializeComponent();
@@ -26,7 +23,8 @@ namespace OptimalRangeSelection
         private void Button1_Click(object sender, EventArgs e)
         {
             textBox1.Visible = true;
-            var solver = new Solver("pants", "jackets");
+            button3.Visible = false;
+            var solver = new Solver(textBox2.Text, textBox3.Text);
 
             if (int.TryParse(tb21x.Text, out int argx1) &&
                 int.TryParse(tb22x.Text, out int argx2) &&
@@ -54,17 +52,32 @@ namespace OptimalRangeSelection
             solver.PrintResults(textBox1);
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void Button4_Click(object sender, EventArgs e)
         {
-            Form2 f2 = new Form2();
-            f2.ShowDialog();
-
+            label12.Visible = true;
+            tb1x.Visible = true;
+            tb1y.Visible = true;
+            textBox2.ReadOnly = true;
+            textBox3.ReadOnly = true;
+            button2.Visible = true;
+            button4.Visible = false;
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void Button2_Click_1(object sender, EventArgs e)
         {
-            Form3 f3 = new Form3();
-            f3.ShowDialog();
+            groupBox1.Visible = true;
+            label5.Text = label8.Text = textBox2.Text;
+            label6.Text = label7.Text = textBox3.Text;
+            tb1x.ReadOnly = tb1y.ReadOnly = true;
+            button2.Visible = false;
+        }
+
+        private void Button3_Click_1(object sender, EventArgs e)
+        {
+            groupBox2.Visible = true;
+            label10.Text = textBox2.Text;
+            label11.Text = textBox3.Text;
+            button3.Visible = false;
         }
     }
 }
