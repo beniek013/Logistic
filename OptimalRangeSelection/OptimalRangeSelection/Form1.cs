@@ -30,10 +30,13 @@ namespace OptimalRangeSelection
                 int.TryParse(tb22x.Text, out int argx2) &&
                 int.TryParse(tb21y.Text, out int argy1) &&
                 int.TryParse(tb22y.Text, out int argy2) &&
+                int.TryParse(textBox4.Text, out int argx3) &&
+                int.TryParse(textBox5.Text, out int argy3) &&
                 int.TryParse(tb21result.Text, out int wyn1) &&
-                int.TryParse(tb22result.Text, out int wyn2))
+                int.TryParse(tb22result.Text, out int wyn2) &&
+                int.TryParse(textBox6.Text, out int wyn3))
             {
-                solver.AddProductionContraints(argx1, argy1, argx2, argy2, wyn1, wyn2);
+                solver.AddProductionContraints(argx1, argy1, argx2, argy2, argx3, argy3, wyn1, wyn2, wyn3);
             };
 
             if (int.TryParse(tb31result.Text, out int res1) &&
@@ -57,8 +60,8 @@ namespace OptimalRangeSelection
             label12.Visible = true;
             tb1x.Visible = true;
             tb1y.Visible = true;
-            textBox2.ReadOnly = true;
-            textBox3.ReadOnly = true;
+            //textBox2.ReadOnly = true;
+            //textBox3.ReadOnly = true;
             button2.Visible = true;
             button4.Visible = false;
         }
@@ -66,9 +69,9 @@ namespace OptimalRangeSelection
         private void Button2_Click_1(object sender, EventArgs e)
         {
             groupBox1.Visible = true;
-            label5.Text = label8.Text = textBox2.Text;
-            label6.Text = label7.Text = textBox3.Text;
-            tb1x.ReadOnly = tb1y.ReadOnly = true;
+            label5.Text = label8.Text = label9.Text = textBox2.Text;
+            label6.Text = label7.Text = label17.Text = textBox3.Text;
+            //tb1x.ReadOnly = tb1y.ReadOnly = true;
             button2.Visible = false;
         }
 
